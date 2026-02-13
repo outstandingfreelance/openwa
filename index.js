@@ -1,47 +1,55 @@
 const wa = require('@open-wa/wa-automate');
 const express = require('express');
 const app = express();
-
-app.use(express.json()); // Парсим JSON из Typebot
+app.use(express.json());
 
 const PORT = 3000;
-let client; // Глобальный клиент WA
+let client;
 
-// Webhook для Typebot (Typebot шлёт POST сюда при завершении флоу)
-app.post('/typebot-webhook', async (req, res) => {
-  const { phone, message } = req.body; // Typebot отправляет номер и текст
-  await client.sendText(phone, message); // Отправляем ответ в WhatsApp
+// 1. Typebot → WhatsApp (работает!)
+app.post('/typebot-response', async (req, res) => {
+  console.log('🔵 Typebot → WA:', req.body);
+  if (client && req.body.phone) {
+    await client.sendText(req.body.phone, req.body.message);
+  }
   res.json({ success: true });
 });
 
-// Endpoint для входящих сообщений из WhatsApp → Typebot
+// 2. Тест endpoint
+app.get('/', (req, res) => res.send('🟢 OpenWA жив!'));
+
 wa.create({
   sessionId: "mybot",
   multiDevice: true,
   headless: true,
-  popup: true,
-  hostNotificationLang: 'RU'
+  popup: true
 }).then(cl => {
   client = cl;
-  start(client);
-
-  // Запускаем сервер ПОСЛЕ создания клиента
-  app.listen(PORT, () => console.log(`Сервер на http://localhost:${PORT}`));
-});
-
-function start(client) {
-  client.onMessage(async message => {
-    if (message.body && !message.isGroupMsg) {
-      // Перенаправляем в Typebot (замените на ваш Typebot URL)
-      await fetch('https://app.typebot.io/typebots/egfzw1zdcdofng0foqj9jjw0', {
+  console.log('✅ WhatsApp подключён!');
+  
+  // 3. WhatsApp → Typebot (КРИТИЧНО!)
+  cl.onMessage(async msg => {
+    if (msg.body && !msg.isGroupMsg) {
+      console.log('📱 WhatsApp:', msg.body);
+      
+      // ОТПРАВЛЯЕМ В TYPEBOT публичный URL!
+      const TYPEBOT_WEBHOOK = 'https://app.typebot.io/typebots/egfzw1zdcdofng0foqj9jjw0';
+      
+      await fetch(TYPEBOT_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          phone: message.from,
-          message: message.body,
-          name: message.sender.pushname
+          phone: msg.from,
+          message: msg.body,
+          name: msg.sender?.pushname || 'User'
         })
-      });
+      }).then(() => console.log('✅ → Typebot'))
+        .catch(err => console.error('❌ Typebot ошибка:', err));
     }
   });
-}
+  
+  app.listen(PORT, () => {
+    console.log(`🌐 Локал: http://localhost:${PORT}`);
+    console.log(`🌐 ngrok: ngrok http ${PORT}`);
+  });
+});
