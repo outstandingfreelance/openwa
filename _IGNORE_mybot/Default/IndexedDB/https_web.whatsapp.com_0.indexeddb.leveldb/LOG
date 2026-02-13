@@ -1,13 +1,13 @@
-2026/02/13-23:43:50.811 9e03 Reusing MANIFEST /Users/edgar/Desktop/веб-разработка/создание чат-бота/openWa/_IGNORE_mybot/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/02/13-23:43:50.812 9e03 Recovering log #69
-2026/02/13-23:43:50.823 9e03 Reusing old log /Users/edgar/Desktop/веб-разработка/создание чат-бота/openWa/_IGNORE_mybot/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000069.log 
-2026/02/13-23:43:52.177 8603 Level-0 table #74: started
-2026/02/13-23:43:52.204 8603 Level-0 table #74: 241733 bytes OK
-2026/02/13-23:43:52.206 8603 Delete type=0 #69
-2026/02/13-23:43:52.207 8603 Manual compaction at level-0 from '\x00%\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00&\x00\x00\x00' @ 0 : 0; will stop at (end)
-2026/02/13-23:43:52.244 9e03 Compacting 1@1 + 1@2 files
-2026/02/13-23:43:52.285 9e03 Generated table #75@1: 14919 keys, 537397 bytes
-2026/02/13-23:43:52.285 9e03 Compacted 1@1 + 1@2 files => 537397 bytes
-2026/02/13-23:43:52.287 9e03 compacted to: files[ 0 0 1 0 0 0 0 ]
-2026/02/13-23:43:52.287 9e03 Delete type=2 #74
-2026/02/13-23:43:52.287 9e03 Delete type=2 #71
+2026/02/14-00:16:24.900 8703 Reusing MANIFEST /Users/edgar/Desktop/веб-разработка/создание чат-бота/openWa/_IGNORE_mybot/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/02/14-00:16:24.902 8703 Recovering log #89
+2026/02/14-00:16:24.906 8703 Reusing old log /Users/edgar/Desktop/веб-разработка/создание чат-бота/openWa/_IGNORE_mybot/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000089.log 
+2026/02/14-00:16:26.139 f403 Level-0 table #94: started
+2026/02/14-00:16:26.163 f403 Level-0 table #94: 134345 bytes OK
+2026/02/14-00:16:26.165 f403 Delete type=0 #89
+2026/02/14-00:16:26.166 f403 Manual compaction at level-0 from '\x00*\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00+\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/02/14-00:16:26.182 8703 Compacting 1@1 + 1@2 files
+2026/02/14-00:16:26.249 8703 Generated table #95@1: 21821 keys, 921592 bytes
+2026/02/14-00:16:26.249 8703 Compacted 1@1 + 1@2 files => 921592 bytes
+2026/02/14-00:16:26.251 8703 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/02/14-00:16:26.252 8703 Delete type=2 #94
+2026/02/14-00:16:26.252 8703 Delete type=2 #91
