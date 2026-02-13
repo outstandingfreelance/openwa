@@ -1,24 +1,47 @@
 const wa = require('@open-wa/wa-automate');
+const express = require('express');
+const app = express();
 
+app.use(express.json()); // Парсим JSON из Typebot
+
+const PORT = 3000;
+let client; // Глобальный клиент WA
+
+// Webhook для Typebot (Typebot шлёт POST сюда при завершении флоу)
+app.post('/typebot-webhook', async (req, res) => {
+  const { phone, message } = req.body; // Typebot отправляет номер и текст
+  await client.sendText(phone, message); // Отправляем ответ в WhatsApp
+  res.json({ success: true });
+});
+
+// Endpoint для входящих сообщений из WhatsApp → Typebot
 wa.create({
-  sessionId: "HELLO_HOW_ARE_YOU",
-  multiDevice: true, //required to enable multiDevice support
-  authTimeout: 60, //wait only 60 seconds to get a connection with the host account device
-  blockCrashLogs: true,
-  disableSpins: true,
+  sessionId: "mybot",
+  multiDevice: true,
   headless: true,
-  hostNotificationLang: 'PT_BR',
-  logConsole: false,
-  popup: true, 
-  qrTimeout: 0, //0 means it will wait forever for you to scan the qr code
-}).then(client => start(client));
+  popup: true,
+  hostNotificationLang: 'RU'
+}).then(cl => {
+  client = cl;
+  start(client);
 
-
+  // Запускаем сервер ПОСЛЕ создания клиента
+  app.listen(PORT, () => console.log(`Сервер на http://localhost:${PORT}`));
+});
 
 function start(client) {
   client.onMessage(async message => {
-    if (message.body === 'Hi') {
-      await client.sendText(message.from, '👋 Hello!');
+    if (message.body && !message.isGroupMsg) {
+      // Перенаправляем в Typebot (замените на ваш Typebot URL)
+      await fetch('https://app.typebot.io/typebots/egfzw1zdcdofng0foqj9jjw0', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: message.from,
+          message: message.body,
+          name: message.sender.pushname
+        })
+      });
     }
   });
 }
